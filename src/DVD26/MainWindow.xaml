@@ -64,9 +64,11 @@
             <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <GroupBox Header="Archive format">
-                        <ComboBox ItemsSource="{Binding Formats}" SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding SelectedFormat}" />
-                        <TextBlock Margin="5,6" Foreground="#A7ABB7" TextWrapping="Wrap"
-                                   Text="MKV keeps the original streams. MP4 encodes video as H.264. Copy modes preserve the disc structure." />
+                        <StackPanel>
+                            <ComboBox ItemsSource="{Binding Formats}" SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding SelectedFormat}" />
+                            <TextBlock Margin="5,6" Foreground="#A7ABB7" TextWrapping="Wrap"
+                                       Text="MKV keeps the original streams. MP4 encodes video as H.264. Copy modes preserve the disc structure." />
+                        </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Audio tracks">
                         <ItemsControl ItemsSource="{Binding SelectedTitle.AudioTracks}">
