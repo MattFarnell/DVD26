@@ -1,0 +1,17 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+artifacts/
+
+# FFmpeg is an external prerequisite; do not commit its large binaries.
+ffmpeg.exe
+ffprobe.exe
+ffplay.exe
+ffmpeg-*.zip
+ffmpeg-*.7z
+
+# DVD26 deliberately does not ship or load copy-protection circumvention tools.
+libdvdcss.dll
+libdvdcss-*.dll
