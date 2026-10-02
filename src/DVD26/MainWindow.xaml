@@ -1,0 +1,101 @@
+<Window x:Class="DVD26.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DVD26" Width="1120" Height="760" MinWidth="900" MinHeight="620"
+        WindowStartupLocation="CenterScreen" Background="#14161B" Foreground="#F4F4F6">
+    <Window.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="Foreground" Value="#F4F4F6" />
+            <Setter Property="Margin" Value="0,0,0,14" />
+            <Setter Property="Padding" Value="12" />
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="4,7" />
+            <Setter Property="Foreground" Value="#F4F4F6" />
+        </Style>
+    </Window.Resources>
+    <Grid Margin="28">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,22">
+            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock FontSize="30" FontWeight="SemiBold" Text="DVD26" />
+                <TextBlock Margin="0,4,0,0" Foreground="#A7ABB7" FontSize="14"
+                           Text="Archive discs you own — without bypassing copy protection" />
+            </StackPanel>
+            <Border Grid.Column="1" Padding="12,7" CornerRadius="16" Background="#252A34" VerticalAlignment="Center">
+                <TextBlock Text="{Binding ToolStatus}" Foreground="#C9C3FF" />
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,0,0,18">
+            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <TextBox Text="{Binding SourcePath, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" />
+            <Button Grid.Column="1" Content="Browse…" Click="BrowseSource_Click" />
+            <Button Grid.Column="2" Content="Scan disc" Background="{StaticResource AccentBrush}" Foreground="White" Click="Scan_Click" />
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="1.05*"/><ColumnDefinition Width="18"/><ColumnDefinition Width="1.4*"/></Grid.ColumnDefinitions>
+            <GroupBox Header="Titles" Grid.Column="0">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="Longest playable title is suggested automatically." Foreground="#A7ABB7" Margin="4,0,4,10" />
+                    <ListBox ItemsSource="{Binding Titles}" SelectedItem="{Binding SelectedTitle}" Background="#20232B" BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="5,7">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <Border Width="28" Height="28" CornerRadius="14" Background="#343845"><TextBlock Text="{Binding Number}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                                    <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" Margin="8,0" />
+                                    <TextBlock Grid.Column="2" Text="{Binding DurationText}" Foreground="#A7ABB7" VerticalAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </GroupBox>
+
+            <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <GroupBox Header="Archive format">
+                        <StackPanel>
+                            <ComboBox ItemsSource="{Binding Formats}" SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding SelectedFormat}" />
+                            <TextBlock Margin="5,6" Foreground="#A7ABB7" TextWrapping="Wrap"
+                                       Text="MKV keeps the original streams. MP4 encodes video as H.264. Copy modes preserve the disc structure." />
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Audio tracks">
+                        <ItemsControl ItemsSource="{Binding SelectedTitle.AudioTracks}">
+                            <ItemsControl.ItemTemplate><DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected}"><StackPanel><TextBlock Text="{Binding Name}"/><TextBlock Text="{Binding Details}" Foreground="#A7ABB7" FontSize="11"/></StackPanel></CheckBox>
+                            </DataTemplate></ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+                    <GroupBox Header="Soft subtitles (selectable in VLC)">
+                        <ItemsControl ItemsSource="{Binding SelectedTitle.SubtitleTracks}">
+                            <ItemsControl.ItemTemplate><DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected}"><StackPanel><TextBlock Text="{Binding Name}"/><TextBlock Text="{Binding Details}" Foreground="#A7ABB7" FontSize="11"/></StackPanel></CheckBox>
+                            </DataTemplate></ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <Grid Grid.Row="3" Margin="0,16,0,0">
+            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="{Binding Status}" />
+                <TextBlock Foreground="#A7ABB7" FontSize="11" Text="Only use media you are legally permitted to copy." />
+            </StackPanel>
+            <Button Grid.Column="1" Content="Choose output…" Click="BrowseOutput_Click" />
+            <Button Grid.Column="2" Content="Start archive" IsEnabled="False" Background="{StaticResource AccentBrush}" Foreground="White" ToolTip="Available after a successful disc scan" />
+        </Grid>
+    </Grid>
+</Window>
